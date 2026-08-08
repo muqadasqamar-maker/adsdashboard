@@ -86,13 +86,16 @@ strong { font-weight: 700; }
 /* ============================================================
    Header
    ============================================================ */
-.site-header {
+.topbar {
   position: sticky;
   top: 0;
   z-index: 20;
   background: rgba(245, 245, 247, 0.8);
   -webkit-backdrop-filter: saturate(160%) blur(10px);
   backdrop-filter: saturate(160%) blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.site-header {
   border-bottom: 1px solid var(--line);
 }
 .site-header__inner {
@@ -709,4 +712,384 @@ strong { font-weight: 700; }
     transition-duration: 0.001ms !important;
     animation-duration: 0.001ms !important;
   }
+}
+
+/* ============================================================
+   Primary navigation (Ad Grant | Projects)
+   ============================================================ */
+.primary-nav__inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 var(--sp-5);
+  display: flex;
+  gap: var(--sp-5);
+}
+.nav-tab {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-start;
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--sp-3) 2px var(--sp-4);
+  border-bottom: 3px solid transparent;
+  transition: border-color .16s var(--ease-hover);
+}
+.nav-tab__label {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-h4);
+  letter-spacing: -0.02em;
+  color: var(--fg-3);
+  transition: color .16s var(--ease-hover);
+}
+.nav-tab__desc { font-size: var(--fs-small); color: var(--fg-3); }
+.nav-tab:hover .nav-tab__label { color: var(--fg-1); }
+.nav-tab.is-active { border-bottom-color: var(--black); }
+.nav-tab.is-active .nav-tab__label { color: var(--fg-1); }
+.nav-tab.is-active .nav-tab__desc { color: var(--fg-2); }
+@media (max-width: 560px) {
+  .nav-tab__desc { display: none; }
+  .nav-tab { padding-top: var(--sp-2); }
+  .primary-nav__inner { gap: var(--sp-6); }
+}
+
+/* ---- Extra status tones (projects speak the same pill language) - */
+.status-working  { background: var(--tint-sky); }
+.status-review   { background: color-mix(in srgb, var(--accent-amber) 26%, var(--white)); }
+.status-waiting  { background: var(--tint-pink); }
+.status-upcoming { background: var(--tint-peri); }
+.status-complete { background: var(--tint-sky-2); }
+
+.hero__status--working .hero__status-icon  { background: var(--tint-sky); }
+.hero__status--review .hero__status-icon   { background: color-mix(in srgb, var(--accent-amber) 26%, var(--white)); }
+.hero__status--upcoming .hero__status-icon { background: var(--tint-peri); }
+
+/* ============================================================
+   Client attention (a quick thing we need from you)
+   ============================================================ */
+.attn-list { display: grid; gap: var(--sp-4); }
+.attn-card {
+  background: color-mix(in srgb, var(--accent-amber) 12%, var(--white));
+  border-radius: var(--r-card);
+  padding: clamp(var(--sp-5), 4vw, var(--sp-6));
+}
+.attn-card__head {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.attn-card__project {
+  font-size: var(--fs-small);
+  font-weight: 700;
+  color: var(--fg-2);
+  margin-bottom: 2px;
+}
+.attn-card__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-h3);
+  line-height: 1.2;
+}
+.attn-card__desc {
+  margin-top: var(--sp-3);
+  color: var(--fg-2);
+  font-size: clamp(17px, 2vw, 19px);
+  line-height: 1.5;
+  max-width: 60ch;
+}
+.attn-card__actions {
+  margin-top: var(--sp-5);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+.attn-card__meta { color: var(--fg-2); font-size: var(--fs-small); }
+.attn-card__more { margin-top: var(--sp-4); }
+.attn-card__detail {
+  margin-top: var(--sp-4);
+  background: var(--white);
+  border-radius: var(--r-input);
+  padding: var(--sp-5);
+  display: grid;
+  gap: var(--sp-4);
+}
+.attn-else { margin-top: var(--sp-4); color: var(--fg-2); font-size: var(--fs-body); }
+
+.mini-block h4 {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: var(--fs-small);
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  color: var(--fg-3);
+  margin-bottom: var(--sp-2);
+}
+.mini-block p { color: var(--fg-2); font-size: var(--fs-body); line-height: 1.5; }
+.plain-list {
+  margin: 0;
+  padding-left: 1.1em;
+  color: var(--fg-2);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+}
+
+/* ============================================================
+   Monthly work summary
+   ============================================================ */
+.worksum__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--sp-6) var(--sp-5);
+}
+.worksum__num {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(48px, 7vw, 72px);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+.worksum__label {
+  margin-top: var(--sp-2);
+  color: var(--fg-2);
+  font-size: var(--fs-body);
+  max-width: 20ch;
+}
+@media (max-width: 760px) { .worksum__grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 440px) { .worksum__grid { grid-template-columns: 1fr; } }
+
+/* ============================================================
+   Project progress (milestones)
+   ============================================================ */
+.progress-list { display: grid; gap: var(--sp-5); }
+.progress-card {
+  background: var(--white);
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow-card);
+  padding: clamp(var(--sp-5), 4vw, var(--sp-7));
+}
+.progress-card__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--sp-4);
+  flex-wrap: wrap;
+}
+.progress-card__name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-h3);
+}
+.progress-card__label {
+  font-weight: 700;
+  font-size: var(--fs-small);
+  color: var(--fg-1);
+  background: var(--tint-sky);
+  padding: 6px 14px;
+  border-radius: var(--r-pill);
+}
+.milestones {
+  list-style: none;
+  margin: var(--sp-6) 0 0;
+  padding: 0;
+  display: flex;
+}
+.milestone {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sp-2);
+  padding-right: var(--sp-4);
+}
+.milestone__dot {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--r-pill);
+  display: grid;
+  place-items: center;
+  background: var(--line);
+  color: var(--white);
+  position: relative;
+  z-index: 1;
+}
+.milestone--done .milestone__dot { background: var(--black); }
+.milestone--current .milestone__dot {
+  background: color-mix(in srgb, var(--accent-amber) 34%, var(--white));
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent-amber) 16%, var(--white));
+}
+.milestone__line {
+  position: absolute;
+  top: 13px;
+  left: 28px;
+  right: 0;
+  height: 2px;
+  background: var(--line);
+  z-index: 0;
+}
+.milestone--done .milestone__line { background: var(--black); }
+.milestone__name { font-weight: 600; font-size: var(--fs-body); }
+.milestone--upcoming .milestone__name { color: var(--fg-3); }
+.milestone__here {
+  font-size: var(--fs-caption);
+  font-weight: 700;
+  color: var(--fg-1);
+  background: color-mix(in srgb, var(--accent-amber) 22%, var(--white));
+  padding: 2px 8px;
+  border-radius: var(--r-pill);
+}
+.progress-card__note {
+  margin-top: var(--sp-6);
+  padding-top: var(--sp-5);
+  border-top: 1px solid var(--line);
+}
+.progress-card__note-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-h4);
+}
+.progress-card__note-body {
+  margin-top: var(--sp-2);
+  color: var(--fg-2);
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  max-width: 60ch;
+}
+@media (max-width: 620px) {
+  .milestones { flex-direction: column; gap: var(--sp-4); }
+  .milestone { flex-direction: row; align-items: center; padding-right: 0; }
+  .milestone__line { display: none; }
+}
+
+/* ============================================================
+   What we're working on (grouped rows)
+   ============================================================ */
+.work-groups { display: grid; gap: var(--sp-7); }
+.work-group__head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-2);
+}
+.work-group__icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-pill);
+  background: var(--tint-sky-2);
+  color: var(--fg-1);
+  flex: none;
+}
+.work-group__label {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-h4);
+}
+.work-group__rows { border-top: 1px solid var(--line); }
+.witem { border-bottom: 1px solid var(--line); }
+.witem__main {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--sp-5);
+  align-items: flex-start;
+  padding: var(--sp-5) var(--sp-2);
+}
+.witem__title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-h4);
+}
+.witem__desc {
+  margin-top: 4px;
+  color: var(--fg-2);
+  font-size: var(--fs-body);
+  line-height: 1.45;
+  max-width: 56ch;
+}
+.witem__meta {
+  margin-top: var(--sp-3);
+  display: flex;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+  align-items: center;
+}
+.witem__timing { font-weight: 700; font-size: var(--fs-small); }
+.witem__reassure {
+  font-size: var(--fs-small);
+  color: var(--fg-2);
+  background: var(--tint-sky-2);
+  padding: 4px 12px;
+  border-radius: var(--r-pill);
+}
+.witem__side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--sp-2);
+  flex: none;
+}
+.witem__detail {
+  padding: 0 var(--sp-2) var(--sp-5);
+  display: grid;
+  gap: var(--sp-4);
+  max-width: 72ch;
+}
+@media (max-width: 680px) {
+  .witem__main { flex-direction: column; }
+  .witem__side { align-items: flex-start; flex-direction: row; width: 100%; justify-content: space-between; }
+}
+
+/* ============================================================
+   Coming up next / recently completed
+   ============================================================ */
+.upnext, .done-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+.upnext__row, .done-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: var(--sp-4) var(--sp-2);
+  border-bottom: 1px solid var(--line);
+}
+.upnext__icon, .done-row__icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-pill);
+  flex: none;
+  color: var(--fg-1);
+}
+.upnext__icon { background: var(--tint-peri); }
+.done-row__icon { background: var(--tint-sky); }
+.upnext__text, .done-row__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+.upnext__title, .done-row__title { font-weight: 700; font-size: var(--fs-body); }
+.upnext__desc, .done-row__desc { color: var(--fg-2); font-size: var(--fs-small); }
+.upnext__when {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-body);
+  white-space: nowrap;
+  color: var(--fg-1);
+}
+.done-row__when {
+  font-size: var(--fs-small);
+  color: var(--fg-2);
+  white-space: nowrap;
 }
