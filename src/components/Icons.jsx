@@ -88,11 +88,12 @@ export function StatusIcon({ status, ...props }) {
 /* ---- Projects icons ------------------------------------------ */
 
 export function WorkingIcon(props) {
-  // A pencil — "we're working on this".
+  // Three dots — a neutral "in progress" glyph (not an edit control).
   return (
     <Svg {...props}>
-      <path d="M4 20h4l10.5-10.5a2 2 0 0 0 0-2.83l-1.17-1.17a2 2 0 0 0-2.83 0L4 16v4z" />
-      <path d="M13.5 6.5l4 4" />
+      <circle cx="6" cy="12" r="1.6" fill="currentColor" stroke="none" />
+      <circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none" />
+      <circle cx="18" cy="12" r="1.6" fill="currentColor" stroke="none" />
     </Svg>
   );
 }
