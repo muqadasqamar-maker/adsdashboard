@@ -842,26 +842,55 @@ strong { font-weight: 700; }
 /* ============================================================
    Monthly work summary
    ============================================================ */
-.worksum__grid {
+.catsum {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--sp-6) var(--sp-5);
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--sp-4);
 }
-.worksum__num {
+.catsum__item {
+  display: flex;
+  gap: var(--sp-4);
+  align-items: flex-start;
+  background: var(--white);
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow-card);
+  padding: var(--sp-5) var(--sp-6);
+}
+.catsum__icon {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: var(--r-pill);
+  background: var(--tint-sky-2);
+  color: var(--fg-1);
+  flex: none;
+}
+.catsum__top {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+.catsum__num {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(48px, 7vw, 72px);
+  font-size: clamp(36px, 5vw, 54px);
   line-height: 1;
   letter-spacing: -0.03em;
 }
-.worksum__label {
+.catsum__label {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-h4);
+}
+.catsum__status {
   margin-top: var(--sp-2);
   color: var(--fg-2);
-  font-size: var(--fs-body);
-  max-width: 20ch;
+  font-size: var(--fs-small);
+  line-height: 1.4;
 }
-@media (max-width: 760px) { .worksum__grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 440px) { .worksum__grid { grid-template-columns: 1fr; } }
+@media (max-width: 640px) { .catsum { grid-template-columns: 1fr; } }
 
 /* ============================================================
    Project progress (milestones)

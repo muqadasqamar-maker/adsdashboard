@@ -58,10 +58,14 @@ export const WORK_STATES = {
 
 // Internal work categories -> polished client sections.
 export const CATEGORIES = {
-  content_social: { key: "content_social", label: "Content & social", icon: "content" },
-  email: { key: "email", label: "Email", icon: "email" },
-  website: { key: "website", label: "Website & landing pages", icon: "website" },
+  content_social: { key: "content_social", label: "Social assets", icon: "content" },
+  email: { key: "email", label: "Email sequence", icon: "email" },
+  website: { key: "website", label: "Landing pages", icon: "website" },
+  blogs: { key: "blogs", label: "Blogs", icon: "blog" },
 };
+
+// Fixed display order for categories.
+export const CATEGORY_ORDER = ["content_social", "email", "website", "blogs"];
 
 export function workState(key) {
   return WORK_STATES[key] || WORK_STATES.working;
@@ -92,13 +96,34 @@ export const completedItems = (data) => byState(data, "complete");
 
 // Group a set of items into ordered client-facing categories.
 export function groupByCategory(items) {
-  const order = ["content_social", "email", "website"];
-  return order
-    .map((key) => ({
-      category: category(key),
-      items: items.filter((i) => i.category === key),
-    }))
-    .filter((g) => g.items.length > 0);
+  return CATEGORY_ORDER.map((key) => ({
+    category: category(key),
+    items: items.filter((i) => i.category === key),
+  })).filter((g) => g.items.length > 0);
+}
+
+// Per-category totals for "This month's work", with a status
+// breakdown so each category's count is tied to what's happening.
+export function countByCategory(data) {
+  return CATEGORY_ORDER.map((key) => {
+    const items = data.workItems.filter((i) => i.category === key);
+    const b = { working: 0, review: 0, waiting: 0, upcoming: 0, complete: 0 };
+    items.forEach((i) => {
+      b[i.state] = (b[i.state] || 0) + 1;
+    });
+    return { category: category(key), total: items.length, breakdown: b };
+  }).filter((c) => c.total > 0);
+}
+
+// A short, plain-English status line for a category breakdown.
+export function statusBreakdownText(b) {
+  const parts = [];
+  if (b.working) parts.push(`${b.working} being worked on`);
+  if (b.review + b.waiting)
+    parts.push(`${b.review + b.waiting} ready for your review`);
+  if (b.upcoming) parts.push(`${b.upcoming} coming up`);
+  if (b.complete) parts.push(`${b.complete} completed`);
+  return parts.join("  ·  ");
 }
 
 // The counts shown in the monthly summary, all derived from the data.

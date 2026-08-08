@@ -155,6 +155,17 @@ export function WebsiteIcon(props) {
   );
 }
 
+export function BlogIcon(props) {
+  // A document with lines — blogs / articles.
+  return (
+    <Svg {...props}>
+      <path d="M6 3.5h8.5L19 8v12.5H6z" />
+      <path d="M14 3.5V8h5" />
+      <path d="M8.5 12.5h7M8.5 15.5h7M8.5 9.5h3" />
+    </Svg>
+  );
+}
+
 export function ProjectStatusIcon({ status, ...props }) {
   switch (status) {
     case "working":
@@ -175,5 +186,6 @@ export function ProjectStatusIcon({ status, ...props }) {
 export function CategoryIcon({ name, ...props }) {
   if (name === "email") return <EmailIcon {...props} />;
   if (name === "website") return <WebsiteIcon {...props} />;
+  if (name === "blog") return <BlogIcon {...props} />;
   return <ContentIcon {...props} />;
 }
