@@ -1,8 +1,7 @@
-# Deploy the no-build version as a plain static site.
-# No bundler step: index.html loads the React source directly and
-# transpiles it in the browser, so we just publish the repo as-is.
-# (To switch to the optimized Vite build later, see README.md and
-#  set command = "npm run build" and publish = "dist".)
+# Build the app with Vite on Netlify's servers and serve the output.
 [build]
-  command = "echo 'static site — no build step'"
-  publish = "."
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"

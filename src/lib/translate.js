@@ -16,7 +16,7 @@
    data object and pull from data.structure etc.
    ============================================================ */
 
-import { group, whole, percent } from "/src/lib/format.js";
+import { group, whole, percent } from "./format.js";
 
 const CHECKS = {
   account_status: (d) => ({

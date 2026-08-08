@@ -8,9 +8,9 @@
       name="description"
       content="A plain-English view of your Google Ad Grant, managed by ActivatUs."
     />
-    <link rel="icon" type="image/svg+xml" href="./assets/icons/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
 
-    <!-- Brand faces (per tokens.css): Bricolage Grotesque + Hanken Grotesk -->
+    <!-- Brand faces: Bricolage Grotesque + Hanken Grotesk -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -18,123 +18,12 @@
       rel="stylesheet"
     />
 
-    <!-- Design tokens (single source of truth) then app styles -->
-    <link rel="stylesheet" href="./src/styles/tokens.css" />
-    <link rel="stylesheet" href="./src/styles/app.css" />
-
-    <!--
-      NO-BUILD RUNTIME
-      ----------------
-      This runs the real React source in src/ with no bundler, so it
-      works on any static server. React comes from a CDN; the import
-      map lets the source use clean `import ... from "react"` lines
-      that a Vite build later resolves from node_modules unchanged.
-      Babel transpiles the JSX in the browser. For production, run the
-      Vite build (see README) to remove the in-browser transpile.
-    -->
-    <script type="importmap">
-      {
-        "imports": {
-          "react": "https://esm.sh/react@18.3.1",
-          "react-dom": "https://esm.sh/react-dom@18.3.1",
-          "react-dom/client": "https://esm.sh/react-dom@18.3.1/client"
-        }
-      }
-    </script>
+    <link rel="stylesheet" href="/src/styles/tokens.css" />
+    <link rel="stylesheet" href="/src/styles/app.css" />
   </head>
   <body>
-    <div id="root">
-      <div class="boot">Loading your account…</div>
-    </div>
-
-    <noscript>
-      <p style="padding: 24px; font-family: sans-serif">
-        This dashboard needs JavaScript to display your Google Ad Grant summary.
-      </p>
-    </noscript>
-
-    <style>
-      .boot {
-        max-width: 1120px;
-        margin: 0 auto;
-        padding: 96px 24px;
-        font-family: "Hanken Grotesk", sans-serif;
-        letter-spacing: -0.02em;
-        color: #3e4448;
-        font-size: 18px;
-      }
-    </style>
-
-    <script src="https://unpkg.com/@babel/standalone@7.25.6/babel.min.js"></script>
-    <script>
-      /*
-        Minimal no-build module loader.
-        Babel-standalone only compiles the entry file, so it can't run a
-        multi-file JSX project on its own. This loader walks the import
-        graph: it fetches each local module ("/src/..."), recursively
-        compiles its dependencies, rewrites those local specifiers to the
-        compiled blob URLs, transpiles the JSX, and hands the graph to the
-        browser's native ES module loader. Bare specifiers ("react") are
-        left untouched and resolved by the <script type="importmap"> above.
-
-        The source files in /src are 100% standard React + JSX and need no
-        changes to run under a real Vite/webpack build later.
-      */
-      (function () {
-        var cache = new Map();
-        var LOCAL = /(from|import)(\s*)(["'])(\/[^"']+)\3/g;
-
-        async function load(url) {
-          if (cache.has(url)) return cache.get(url);
-          var placeholder = {};
-          cache.set(url, placeholder);
-
-          var code = await (await fetch(url)).text();
-
-          // Collect local dependencies referenced by this module.
-          var specs = new Set();
-          code.replace(LOCAL, function (m, kw, ws, q, spec) {
-            specs.add(spec);
-            return m;
-          });
-
-          // Compile dependencies first, mapping each to its blob URL.
-          var map = {};
-          for (var spec of specs) {
-            map[spec] = await load(new URL(spec, location.origin).href);
-          }
-
-          // Point local imports at the compiled blobs.
-          code = code.replace(LOCAL, function (m, kw, ws, q, spec) {
-            return kw + ws + q + map[spec] + q;
-          });
-
-          var out = Babel.transform(code, {
-            presets: ["react"],
-            sourceType: "module",
-            filename: url,
-          }).code;
-
-          var blobUrl = URL.createObjectURL(
-            new Blob([out], { type: "text/javascript" })
-          );
-          cache.set(url, blobUrl);
-          return blobUrl;
-        }
-
-        load(location.origin + "/src/main.jsx")
-          .then(function (entry) {
-            return import(entry);
-          })
-          .catch(function (err) {
-            console.error(err);
-            var root = document.getElementById("root");
-            if (root) {
-              root.innerHTML =
-                '<div class="boot">Something went wrong loading the dashboard. Check the console for details.</div>';
-            }
-          });
-      })();
-    </script>
+    <div id="root"></div>
+    <!-- Vite compiles the JSX ahead of time. No in-browser transpile. -->
+    <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

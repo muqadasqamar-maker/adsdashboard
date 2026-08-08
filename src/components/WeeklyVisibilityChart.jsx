@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { group } from "/src/lib/format.js";
+import { group } from "../lib/format.js";
 
 /* ============================================================
    WeeklyVisibilityChart — "How often your ads appeared this week".

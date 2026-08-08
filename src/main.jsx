@@ -1,7 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import App from "/src/App.jsx";
-import { mockData } from "/src/data/mockData.js";
+import App from "./App.jsx";
+import { mockData } from "./data/mockData.js";
 
 /* ============================================================
    Entry point.

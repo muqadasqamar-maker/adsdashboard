@@ -1,5 +1,5 @@
 import React from "react";
-import { group, daysAgoPhrase } from "/src/lib/format.js";
+import { group, daysAgoPhrase } from "../lib/format.js";
 
 /* ============================================================
    ManagementActivity — "Your account is being actively managed".

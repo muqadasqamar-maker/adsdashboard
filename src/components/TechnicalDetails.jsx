@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { ChevronIcon } from "/src/components/Icons.jsx";
-import { group, percent, longDate } from "/src/lib/format.js";
-import { overallStatus } from "/src/lib/status.js";
+import { ChevronIcon } from "./Icons.jsx";
+import { group, percent, longDate } from "../lib/format.js";
+import { overallStatus } from "../lib/status.js";
 
 /* ============================================================
    TechnicalDetails — the Google Ads vocabulary behind the summary,

@@ -1,6 +1,6 @@
 import React from "react";
-import { StatusIcon } from "/src/components/Icons.jsx";
-import { STATUS } from "/src/lib/status.js";
+import { StatusIcon } from "./Icons.jsx";
+import { STATUS } from "../lib/status.js";
 
 /* ============================================================
    HealthHero — reassurance before numbers.

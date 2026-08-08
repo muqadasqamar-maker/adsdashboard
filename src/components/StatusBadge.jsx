@@ -1,6 +1,6 @@
 import React from "react";
-import { STATUS } from "/src/lib/status.js";
-import { StatusIcon } from "/src/components/Icons.jsx";
+import { STATUS } from "../lib/status.js";
+import { StatusIcon } from "./Icons.jsx";
 
 /* ============================================================
    StatusBadge — the one pill that communicates state.

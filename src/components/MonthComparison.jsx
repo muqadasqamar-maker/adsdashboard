@@ -1,5 +1,5 @@
 import React from "react";
-import { whole, percent } from "/src/lib/format.js";
+import { whole, percent } from "../lib/format.js";
 
 /* ============================================================
    MonthComparison — this month vs last month, made safe to read.

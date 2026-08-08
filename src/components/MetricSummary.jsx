@@ -1,6 +1,6 @@
 import React from "react";
-import MetricItem from "/src/components/MetricItem.jsx";
-import { group, whole, percent, inEveryHundred } from "/src/lib/format.js";
+import MetricItem from "./MetricItem.jsx";
+import { group, whole, percent, inEveryHundred } from "../lib/format.js";
 
 /* ============================================================
    MetricSummary — "What your ads are doing".

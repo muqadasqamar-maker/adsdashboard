@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import StatusBadge from "/src/components/StatusBadge.jsx";
-import { ChevronIcon } from "/src/components/Icons.jsx";
-import { checksByGroup } from "/src/lib/translate.js";
+import StatusBadge from "./StatusBadge.jsx";
+import { ChevronIcon } from "./Icons.jsx";
+import { checksByGroup } from "../lib/translate.js";
 
 /* ============================================================
    AttentionSection — "What we're keeping an eye on".

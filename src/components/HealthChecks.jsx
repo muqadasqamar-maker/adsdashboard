@@ -1,6 +1,6 @@
 import React from "react";
-import HealthCheckRow from "/src/components/HealthCheckRow.jsx";
-import { checksByGroup } from "/src/lib/translate.js";
+import HealthCheckRow from "./HealthCheckRow.jsx";
+import { checksByGroup } from "../lib/translate.js";
 
 /* ============================================================
    HealthChecks — "We're taking care of the details".

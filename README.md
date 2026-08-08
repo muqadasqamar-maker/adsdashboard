@@ -9,48 +9,39 @@ Frontend only. No backend, no auth, no database. All numbers come from a mock
 object shaped like the real monitoring API, so it can be wired to the live API
 later without redesigning any components.
 
----
-
-## Run it now (no install required)
-
-There is no build step for the preview. It runs the real React source through
-a tiny in-browser loader, so all you need is any static file server.
-
-**Option A — the included PowerShell server (Windows, nothing to install):**
-
-```bash
-powershell -ExecutionPolicy Bypass -File .\serve.ps1
-```
-
-Then open the printed address (default `http://localhost:5178/`).
-Use `-Port 5200` to change the port.
-
-**Option B — any static server you already have**, for example:
-
-```bash
-npx serve .
-```
-
-> The preview needs a server (not `file://`) because it loads ES modules.
-> It also loads React and the Bricolage/Hanken fonts from a CDN, so an
-> internet connection is required the first time.
+Built with **React + Vite**.
 
 ---
 
-## Move to a production build (Vite)
-
-The source in `src/` is standard React + JSX. When you are ready for a real
-build (which removes the in-browser transpile and CDN dependency):
+## Run it locally
 
 ```bash
 npm install
-# use the Vite entry file instead of the no-build one:
-#   Windows:  move index.html index.nobuild.html ; move index.vite.html index.html
-#   macOS/Linux:  mv index.html index.nobuild.html && mv index.vite.html index.html
-npm run dev      # or: npm run build
+npm run dev      # local dev server with hot reload
 ```
 
-Nothing in `src/` changes between the two modes.
+Then open the printed `http://localhost:5173` address.
+
+To produce the production build:
+
+```bash
+npm run build    # outputs to dist/
+npm run preview  # serve the built dist/ locally to check it
+```
+
+> React is bundled by the build. The Bricolage / Hanken fonts still load from
+> Google Fonts, so an internet connection is needed to see the exact brand type.
+
+---
+
+## Deploy
+
+The repo is preconfigured for a zero-setup deploy on either host:
+
+- **Netlify** — `netlify.toml` sets build command `npm run build` and publish
+  dir `dist`. Import the repo and click Deploy.
+- **Vercel** — auto-detects Vite (build `vite build`, output `dist`). Import
+  the repo and click Deploy. No settings to change.
 
 ---
 
@@ -75,11 +66,11 @@ raw Google Ads terminology never leaks into the primary interface.
 ## How the code is organised
 
 ```
-index.html            No-build preview entry (in-browser loader)
-index.vite.html       Production entry (swap in for Vite)
-serve.ps1             Dependency-free static server for the preview
-package.json          Vite build path
-assets/               Real ActivatUs brand assets (logos, favicon)
+index.html            Vite entry
+netlify.toml          Netlify build config
+vite.config.js        Vite + React plugin
+package.json
+public/assets/        Real ActivatUs brand assets (logos, favicon)
 src/
   main.jsx            Entry: renders <App data={…} />
   App.jsx             Composes the report sections

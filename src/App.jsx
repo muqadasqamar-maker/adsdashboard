@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import DashboardHeader from "/src/components/DashboardHeader.jsx";
-import HealthHero from "/src/components/HealthHero.jsx";
-import MetricSummary from "/src/components/MetricSummary.jsx";
-import WeeklyVisibilityChart from "/src/components/WeeklyVisibilityChart.jsx";
-import HealthChecks from "/src/components/HealthChecks.jsx";
-import AttentionSection from "/src/components/AttentionSection.jsx";
-import ManagementActivity from "/src/components/ManagementActivity.jsx";
-import MonthComparison from "/src/components/MonthComparison.jsx";
-import TechnicalDetails from "/src/components/TechnicalDetails.jsx";
-import { overallStatus } from "/src/lib/status.js";
-import { lastCheckedPhrase } from "/src/lib/format.js";
+import DashboardHeader from "./components/DashboardHeader.jsx";
+import HealthHero from "./components/HealthHero.jsx";
+import MetricSummary from "./components/MetricSummary.jsx";
+import WeeklyVisibilityChart from "./components/WeeklyVisibilityChart.jsx";
+import HealthChecks from "./components/HealthChecks.jsx";
+import AttentionSection from "./components/AttentionSection.jsx";
+import ManagementActivity from "./components/ManagementActivity.jsx";
+import MonthComparison from "./components/MonthComparison.jsx";
+import TechnicalDetails from "./components/TechnicalDetails.jsx";
+import { overallStatus } from "./lib/status.js";
+import { lastCheckedPhrase } from "./lib/format.js";
 
 /* ============================================================
    App — composes the client report.

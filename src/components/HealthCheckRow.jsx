@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import StatusBadge from "/src/components/StatusBadge.jsx";
-import { StatusIcon, ChevronIcon } from "/src/components/Icons.jsx";
+import StatusBadge from "./StatusBadge.jsx";
+import { StatusIcon, ChevronIcon } from "./Icons.jsx";
 
 /* ============================================================
    HealthCheckRow — one editorial row (brand rule 5: rows, not a

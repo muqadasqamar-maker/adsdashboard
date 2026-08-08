@@ -4,6 +4,9 @@
   "private": true,
   "description": "Client-facing Google Ad Grant dashboard for nonprofits, managed by ActivatUs. Frontend only.",
   "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
