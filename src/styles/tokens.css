@@ -1,0 +1,238 @@
+/* ============================================================
+   ActivatUs — Color & Type Foundations  (SSOT)
+   Formerly Creative Frontiers. Rebranded April 2026.
+   Typefaces: Bricolage Grotesque (display) + Hanken Grotesk (body/UI)
+   Rebuilt 2026-07-02 to the operator-approved J2/K2 direction
+   (editorial rows, pastel-tint chips, choreographed motion).
+   Palette/radii/shadows/spacing carried forward from the gold-pack
+   port (Yahya Figma 2026-06-01) — every prior token is retained.
+   This file is the ONLY place literal values live. Everything
+   else references token NAMES. If a doc and this file disagree,
+   THIS FILE WINS.
+   ============================================================ */
+
+/* Fonts are now served from the Google Fonts CDN (self-hosting the two
+   faces is a hardening follow-up; the retired Space Grotesk files remain
+   archived in assets/fonts/). Include this in every HTML artifact:
+
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+*/
+
+:root {
+  /* ---- Core neutrals ---------------------------------------- */
+  --black:        #000000;   /* primary text, buttons, the mark   */
+  --ink:          #222222;   /* wordmark lettering / softer black */
+  --ink-2:        #3E4448;   /* avatar tile background            */
+  --white:        #FFFFFF;
+  --surface:      #F5F5F7;   /* default page background           */
+  --bg-page:      #F5F5F7;   /* alias: page bg (fleet --bg-* name) */
+  --line:         #E6E6E6;   /* hairlines, row dividers, donut track */
+  --line-2:       #CECCCC;   /* dashed placeholder borders        */
+
+  /* ---- Text roles ------------------------------------------- */
+  --fg-1:         #000000;   /* headlines, primary copy           */
+  --fg-2:         #3E4448;   /* secondary copy                    */
+  --fg-3:         #ABABAB;   /* muted / captions / placeholder    */
+  --fg-on-dark:   #FFFFFF;
+
+  /* ---- Brand gradient (the wordmark / mark) ----------------- *
+   * teal → sky → pink → yellow                                  */
+  --grad-teal:    #00C2C0;
+  --grad-sky:     #6AD6FD;
+  --grad-pink:    #FE2BAB;
+  --grad-yellow:  #FFD801;
+  --gradient-brand: linear-gradient(105deg,
+      #00C2C0 0%, #6AD6FD 28%, #FE2BAB 61%, #FFD801 100%);
+
+  /* ---- Brand gradient (badge / favicon / soft fills) -------- *
+   * cyan → pink → orange — warmer, used for circular badges     */
+  --badge-cyan:   #00E5FF;
+  --badge-pink:   #FF3CAC;
+  --badge-orange: #FF8A00;
+  --gradient-badge: linear-gradient(150deg,
+      #00E5FF 0%, #FF3CAC 80%, #FF8A00 100%);
+
+  /* ---- Accent solids (pulled from the gradient) ------------- */
+  --accent-teal:   #00C2C0;
+  --accent-sky:    #6AD6FD;
+  --accent-blue:   #2FBEF1;
+  --accent-pink:   #FF5EBF;
+  --accent-magenta:#FE2BAB;
+  --accent-yellow: #FFD801;
+  --accent-orange: #FF8A00;
+  --accent-amber:  #FFB327;   /* sparkle/clipboard icon chips     */
+
+  /* ---- Soft tints & surfaces (pastel chip fills, soft bands) - */
+  --tint-sky:      #B5E8FD;
+  --tint-sky-2:    #EDF8FD;
+  --tint-ice:      #F1F8FB;
+  --tint-peri:     #B7D5F4;   /* periwinkle                       */
+  --tint-cloud:    #F9FBFE;
+  --tint-pink:     #FFBFFF;
+  /* card wash: top periwinkle → bottom cloud */
+  --wash-cool:     linear-gradient(180deg, #B7D5F4 0%, #F9FBFE 100%);
+  --wash-ice:      linear-gradient(180deg, #B5E8FD 0%, #EDF8FD 100%);
+  --wash-light:    linear-gradient(180deg, #F9FBFE 0%, rgba(183,213,244,0.20) 100%);
+  /* dark hero radial */
+  --wash-dark:     radial-gradient(circle at 50% 40%, #303030 0%, #000000 100%);
+
+  /* ---- Radii ------------------------------------------------ */
+  --r-button:   12px;
+  --r-input:    14px;   /* registered deviation: email capture/inputs */
+  --r-card:     26px;
+  --r-card-lg:  30px;
+  --r-hero:     48px;
+  --r-tile:     32px;   /* avatar / rounded image tile            */
+  --r-pill:     999px;
+
+  /* ---- Elevation -------------------------------------------- */
+  --shadow-card: 0px 4px 31.3px 0px rgba(38,36,61,0.05);
+  --shadow-lift: 0px 12px 40px 0px rgba(38,36,61,0.10);
+
+  /* ---- Motion (choreographed language, J2/K2) ---------------- *
+   * --ease-out:   entrance reveals, up to ~0.9s                  *
+   * --ease-hover: hover micro-interactions, 0.2–0.3s             *
+   * --ease-wink:  the ONE sanctioned overshoot micro-gesture     *
+   *               per surface (e.g. the row arrow)               */
+  --ease-out:   cubic-bezier(0.16,1,0.3,1);
+  --ease-hover: cubic-bezier(0.4,0,0.2,1);
+  --ease-wink:  cubic-bezier(0.34,1.56,0.64,1);
+
+  /* ---- Spacing scale (8pt-ish) ------------------------------ */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 24px; --sp-6: 32px; --sp-7: 48px; --sp-8: 64px; --sp-9: 96px;
+
+  /* ---- Type ------------------------------------------------- */
+  --font-display: 'Bricolage Grotesque', 'Helvetica Neue', Arial, sans-serif; /* display / headlines */
+  --font-sans:    'Hanken Grotesk', 'Helvetica Neue', Arial, sans-serif;      /* body / UI           */
+  --tracking:  -0.02em;     /* ActivatUs sets -2% on nearly everything;
+                               display ≥48px may tighten to -0.03em  */
+
+  /* role sizes (px) — display-heavy brand */
+  --fs-mega:    96px;   /* hero stat numbers (scale up to 168px+) */
+  --fs-display: 64px;
+  --fs-h1:      40px;
+  --fs-h2:      32px;
+  --fs-h3:      25px;
+  --fs-h4:      20px;
+  --fs-body:    17px;
+  --fs-small:   14px;
+  --fs-caption: 12px;
+  --fs-eyebrow: 15px;
+}
+
+/* ============================================================
+   Semantic element defaults
+   Two-face system: display tier = Bricolage Grotesque,
+   body/UI tier = Hanken Grotesk. Both track at var(--tracking).
+   ============================================================ */
+.as-display, .as-h1, .as-h2, .as-h3, .as-h4,
+.as-body, .as-small, .as-caption, .as-eyebrow, .as-quote {
+  font-family: var(--font-sans);
+  letter-spacing: var(--tracking);
+  color: var(--fg-1);
+  margin: 0;
+}
+/* display tier override — headings/display/quote carry Bricolage
+   (loaded weights 500/600/700; J2 sets headings at 600, numbers 700) */
+.as-mega, .as-display, .as-h1, .as-h2, .as-h3, .as-h4, .as-quote {
+  font-family: var(--font-display);
+}
+
+.as-mega    { font-weight: 700; font-size: var(--fs-mega);
+              line-height: 1.0; letter-spacing: var(--tracking); }
+.as-display { font-weight: 600; font-size: var(--fs-display); line-height: 1.04; }
+.as-h1      { font-weight: 600; font-size: var(--fs-h1);  line-height: 1.125; }
+.as-h2      { font-weight: 600; font-size: var(--fs-h2);  line-height: 1.18; }
+.as-h3      { font-weight: 500; font-size: var(--fs-h3);  line-height: 1.24; }
+.as-h4      { font-weight: 600; font-size: var(--fs-h4);  line-height: 1.3; }
+.as-body    { font-weight: 400; font-size: var(--fs-body); line-height: 1.45; }
+.as-small   { font-weight: 400; font-size: var(--fs-small); line-height: 1.45; }
+.as-caption { font-weight: 400; font-size: var(--fs-caption); line-height: 1.3; color: var(--fg-3); }
+.as-eyebrow { font-weight: 700; font-size: var(--fs-eyebrow); line-height: 1.25;
+              text-transform: uppercase; letter-spacing: 0.01em; }
+.as-quote   { font-weight: 600; font-size: var(--fs-h3); line-height: 1.4; }
+
+/* gradient text / fills */
+.as-gradient-text {
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ============================================================
+   Primitive: button (black pill-rect)
+   Motion is transform/opacity/paint only (J2): scale on hover,
+   entrance easing on var(--ease-out). Never animate layout.
+   ============================================================ */
+.as-btn {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  font-weight: 700;
+  letter-spacing: var(--tracking);
+  border-radius: var(--r-button);
+  padding: 12px 26px;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: transform .16s var(--ease-out), color .16s ease, background .16s ease, opacity .15s ease;
+}
+.as-btn-primary {
+  color: var(--white);
+  border: 2px solid transparent;
+  background: linear-gradient(var(--black), var(--black)) padding-box,
+              var(--gradient-brand) border-box;
+}
+.as-btn-primary:hover  { transform: scale(1.05); }
+.as-btn-primary:active { transform: scale(1.01); }
+.as-btn-outline   { background: transparent; color: var(--black); border: 1.7px solid var(--black); }
+.as-btn-outline:hover  { background: var(--black); color: var(--white); }
+
+/* secondary: gradient-stroke → fills with the full brand gradient + grows on hover */
+.as-btn-secondary, .as-btn-gradient {
+  position: relative;
+  color: var(--black);
+  border: 2px solid transparent;
+  background:
+    linear-gradient(#fff, #fff) padding-box,
+    var(--gradient-brand) border-box;
+}
+.as-btn-secondary:hover, .as-btn-gradient:hover {
+  color: var(--white);
+  background:
+    var(--gradient-brand) padding-box,
+    var(--gradient-brand) border-box;
+  transform: scale(1.05);
+}
+.as-btn-secondary:active, .as-btn-gradient:active { transform: scale(1.01); }
+
+/* primitive: pill chip (classification tags) —
+   soft pastel-tint fill + dark ink (J2). No border, no white-wash.
+   Default tint is sky; swap per use: --tint-pink / --tint-peri / --tint-sky. */
+.as-chip {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: var(--fs-small);
+  letter-spacing: var(--tracking);
+  border-radius: var(--r-pill);
+  border: none;
+  padding: 8px 17px;
+  background: var(--tint-sky);
+  color: var(--fg-1);
+  display: inline-flex;
+  align-items: center;
+}
+
+/* primitive: card — still exists for GENUINE card use (a floating
+   proof card, a stat panel). NOT the default section layout: sections
+   lead with editorial index rows (see kit.md Law 5). */
+.as-card {
+  background: var(--white);
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow-card);
+}

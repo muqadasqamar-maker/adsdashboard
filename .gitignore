@@ -1,0 +1,11 @@
+# Dependencies / build output (used only on the Vite build path)
+node_modules/
+dist/
+dist-ssr/
+
+# Local tooling / editor
+.claude/
+.vscode/
+.DS_Store
+Thumbs.db
+*.log
