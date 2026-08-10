@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { supabase, supabaseConfigured } from "./lib/supabaseClient.js";
 import { apiGet } from "./lib/api.js";
 import App from "./App.jsx";
@@ -33,6 +33,9 @@ export default function AuthGate() {
   const [phase, setPhase] = useState("loading"); // loading | ready | error
   const [loadError, setLoadError] = useState(null);
   const [forceLogin, setForceLogin] = useState(false);
+  // The user id we've already loaded data for, so background token
+  // refreshes (which fire when the tab regains focus) don't reload the app.
+  const loadedFor = useRef(null);
 
   // Subscribe to auth state.
   useEffect(() => {
@@ -40,14 +43,21 @@ export default function AuthGate() {
     supabase.auth.getSession().then(({ data }) => setSession(data.session || null));
     const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => {
       setSession(s || null);
-      if (!s) setData(null);
+      if (!s) {
+        loadedFor.current = null;
+        setData(null);
+      }
     });
     return () => sub.subscription.unsubscribe();
   }, []);
 
-  // Load portal data once signed in.
+  // Load portal data once per signed-in user (not on every token refresh).
   useEffect(() => {
-    if (!session) return;
+    const uid = session && session.user && session.user.id;
+    if (!uid) return;
+    if (loadedFor.current === uid) return; // already loaded; ignore refreshes
+    loadedFor.current = uid;
+
     let live = true;
     setPhase("loading");
     setLoadError(null);
@@ -59,6 +69,7 @@ export default function AuthGate() {
       })
       .catch((e) => {
         if (!live) return;
+        loadedFor.current = null; // allow a retry on the next change
         setLoadError(e.message || "Something went wrong.");
         setPhase("error");
       });
