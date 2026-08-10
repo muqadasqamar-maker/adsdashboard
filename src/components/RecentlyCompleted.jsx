@@ -1,5 +1,6 @@
 import React from "react";
 import { CheckIcon } from "./Icons.jsx";
+import ReviewLink from "./ReviewLink.jsx";
 import { completedItems } from "../lib/projectLang.js";
 
 /* ============================================================
@@ -30,6 +31,7 @@ export default function RecentlyCompleted({ data }) {
             <div className="done-row__text">
               <span className="done-row__title">{item.title}</span>
               <span className="done-row__desc">{item.description}</span>
+              {item.reviewLink ? <ReviewLink href={item.reviewLink} /> : null}
             </div>
             <span className="done-row__when">Completed {item.timing.label}</span>
           </li>

@@ -1392,3 +1392,23 @@ strong { font-weight: 700; }
 .fb__msg { font-size: var(--fs-small); padding: 8px 14px; border-radius: var(--r-input); line-height: 1.4; }
 .fb__msg--ok { background: var(--tint-sky); color: var(--fg-1); }
 .fb__msg--err { background: color-mix(in srgb, var(--accent-magenta) 12%, var(--white)); color: var(--fg-1); }
+
+/* Compact "Review this" link shown on any item with a Review Link */
+.review-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: var(--fs-small);
+  letter-spacing: var(--tracking);
+  color: var(--fg-1);
+  text-decoration: none;
+  border: 1.5px solid var(--black);
+  border-radius: var(--r-pill);
+  padding: 5px 14px;
+  transition: background .16s var(--ease-hover), color .16s ease;
+}
+.review-link:hover { background: var(--black); color: var(--white); }
+.review-link svg { flex: none; }
+.attn-card__review { margin-top: var(--sp-4); }

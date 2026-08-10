@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ProjectStatusBadge from "./ProjectStatusBadge.jsx";
 import FeedbackPanel from "./FeedbackPanel.jsx";
+import ReviewLink from "./ReviewLink.jsx";
 import { ChevronIcon } from "./Icons.jsx";
 import { workState, timingLabel } from "../lib/projectLang.js";
 
@@ -30,6 +31,7 @@ export default function WorkItemRow({ item }) {
             {!s.needsClient ? (
               <span className="witem__reassure">Nothing needed from you</span>
             ) : null}
+            {item.reviewLink ? <ReviewLink href={item.reviewLink} /> : null}
           </div>
         </div>
 

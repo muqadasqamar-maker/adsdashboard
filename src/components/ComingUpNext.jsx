@@ -1,5 +1,6 @@
 import React from "react";
 import { UpcomingIcon } from "./Icons.jsx";
+import ReviewLink from "./ReviewLink.jsx";
 import { upcomingItems } from "../lib/projectLang.js";
 
 /* ============================================================
@@ -32,6 +33,7 @@ export default function ComingUpNext({ data }) {
             <div className="upnext__text">
               <span className="upnext__title">{item.title}</span>
               <span className="upnext__desc">{item.description}</span>
+              {item.reviewLink ? <ReviewLink href={item.reviewLink} /> : null}
             </div>
             <span className="upnext__when">{item.timing.label}</span>
           </li>

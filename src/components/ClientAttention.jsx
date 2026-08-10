@@ -1,6 +1,7 @@
 import React from "react";
 import ProjectStatusBadge from "./ProjectStatusBadge.jsx";
 import FeedbackPanel from "./FeedbackPanel.jsx";
+import ReviewLink from "./ReviewLink.jsx";
 import { attentionItems } from "../lib/projectLang.js";
 
 /* ============================================================
@@ -21,6 +22,12 @@ function AttentionCard({ item, projectName }) {
       </div>
 
       <p className="attn-card__desc">{item.description}</p>
+
+      {item.reviewLink ? (
+        <div className="attn-card__review">
+          <ReviewLink href={item.reviewLink} variant="primary" />
+        </div>
+      ) : null}
 
       <FeedbackPanel item={item} />
     </div>

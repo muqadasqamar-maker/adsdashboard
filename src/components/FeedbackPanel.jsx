@@ -87,16 +87,6 @@ export default function FeedbackPanel({ item }) {
       ) : null}
 
       <div className="fb__actions">
-        {item.reviewLink ? (
-          <a
-            className="as-btn as-btn-primary"
-            href={item.reviewLink}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Review this
-          </a>
-        ) : null}
         <button
           type="button"
           className="as-btn as-btn-outline"
