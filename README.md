@@ -5,11 +5,10 @@ ActivatUs manages. It is built for a non-technical reader (think a 50–70 year
 old executive director) who should understand, within about ten seconds,
 whether their grant is healthy and being looked after.
 
-Frontend only. No backend, no auth, no database. All numbers come from a mock
-object shaped like the real monitoring API, so it can be wired to the live API
-later without redesigning any components.
-
-Built with **React + Vite**.
+Built with **React + Vite**. The Ad Grant view runs on mock data shaped like
+the real monitoring API. The Projects view reads **live from ClickUp** through
+a thin serverless proxy that keeps the API token server-side (see "Connect
+ClickUp" below). No database, no client-side secrets.
 
 ---
 
@@ -45,21 +44,42 @@ The repo is preconfigured for a zero-setup deploy on either host:
 
 ---
 
-## Connect the real API
+## Connect ClickUp (live Projects data)
 
-1. Open `src/data/mockData.js`. It documents the exact shape the UI expects.
-2. In `src/main.jsx`, replace the imported `mockData` with your fetched
-   response:
+The Projects area reads **live** from ClickUp through a small serverless proxy
+so the API token stays on the server and never reaches the browser.
 
-   ```js
-   const res = await fetch("/api/ad-grant/sweep?account=…");
-   const data = await res.json();
-   root.render(<App data={data} />);
-   ```
+- `api/projects.js` — Vercel serverless function. Reads the token from the
+  environment, fetches the campaign list, and returns the client view.
+- `api/_transform.js` — maps ClickUp tasks (statuses, tags/names, due dates)
+  onto the app's shape. No ClickUp terminology reaches the client.
+- `src/main.jsx` — renders instantly with the bundled fallback, then swaps in
+  the live data from `/api/projects` when it arrives.
 
-As long as the response matches the shape in `mockData.js`, no component needs
-to change. All human-facing wording is produced in `src/lib/translate.js`, so
-raw Google Ads terminology never leaks into the primary interface.
+**Setup (one time):**
+
+1. Create a ClickUp API token: ClickUp → your avatar → **Settings → Apps →
+   API Token** (a personal token, `pk_…`).
+2. In Vercel → your project → **Settings → Environment Variables**, add:
+   - `CLICKUP_TOKEN` = your token (required)
+   - `CLICKUP_LIST_ID` = a list id (optional; defaults to the Back-to-School
+     2026 list `901820231824`)
+3. Redeploy. The Projects page now shows live ClickUp data.
+
+The token lives only in Vercel's environment. It is never committed, never
+sent to the browser, and can be rotated in the dashboard at any time. If it
+isn't set (or you're running locally without `vercel dev`), the app quietly
+falls back to the bundled sample so nothing breaks.
+
+**Run the function locally:** `vercel dev` (serves both the Vite app and the
+`/api` function). Plain `npm run dev` runs the UI only, on the fallback data.
+
+### Ad Grant data
+
+The Ad Grant view still uses the mock in `src/data/mockData.js`. To wire its
+own API later, fetch it in `src/main.jsx` and pass it as `adGrant` to `<App>`;
+the shape is documented in that file. All human-facing wording is produced in
+`src/lib/translate.js`, so raw Google Ads terminology never leaks into the UI.
 
 ---
 
