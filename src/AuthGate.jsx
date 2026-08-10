@@ -5,6 +5,7 @@ import App from "./App.jsx";
 import Login from "./components/auth/Login.jsx";
 import Signup from "./components/auth/Signup.jsx";
 import AuthShell from "./components/auth/AuthShell.jsx";
+import AdminInvites from "./components/admin/AdminInvites.jsx";
 
 /* ============================================================
    AuthGate — the top of the app.
@@ -69,6 +70,11 @@ export default function AuthGate() {
   const signOut = useCallback(() => {
     if (supabase) supabase.auth.signOut();
   }, []);
+
+  // ActivatUs-only invite manager. Independent of client sign-in.
+  if (new URLSearchParams(window.location.search).get("admin") === "1") {
+    return <AdminInvites />;
+  }
 
   if (!supabaseConfigured) {
     return (

@@ -74,11 +74,14 @@ then log in and see only their client's data.
    - `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` (server only — secret)
    - `CLICKUP_TOKEN` (server only — one ActivatUs workspace token reads all
      client folders)
+   - `ADMIN_TOKEN` (server only — the password that unlocks the admin page)
 5. Redeploy.
 
-**Inviting a client:** add a row to `invites` (a long random `token`, the
-client's `id`) and send `https://<your-app>/?invite=<token>`. They sign up once
-(one account per email), then log in normally afterwards.
+**Inviting a client (admin page):** go to `https://<your-app>/?admin=1`, enter
+the `ADMIN_TOKEN` password, pick a client, and click **Create invite** to get a
+copyable `…/?invite=<token>` link. Revoke a link there anytime. (You can also
+insert an `invites` row in Supabase by hand, but the admin page is the easy
+way.) Recipients sign up once (one account per email), then log in normally.
 
 **Adding a client:** add a row to `clients` with their `clickup_list_ids` (the
 lists that feed their Projects view) and `clickup_customer` value.

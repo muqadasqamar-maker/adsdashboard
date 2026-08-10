@@ -1231,3 +1231,110 @@ strong { font-weight: 700; }
   cursor: pointer;
   font-size: inherit;
 }
+
+/* ============================================================
+   Admin — invite manager (?admin=1)
+   ============================================================ */
+.admin { min-height: 100vh; background: var(--surface); }
+.admin__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: var(--sp-4) var(--sp-5);
+  border-bottom: 1px solid var(--line);
+  background: var(--white);
+}
+.admin__tag {
+  font-size: var(--fs-small);
+  font-weight: 700;
+  color: var(--fg-2);
+}
+.admin__body {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: var(--sp-6) var(--sp-5) var(--sp-8);
+  display: grid;
+  gap: var(--sp-5);
+}
+.admin__panel {
+  background: var(--white);
+  border-radius: var(--r-card);
+  box-shadow: var(--shadow-card);
+  padding: clamp(var(--sp-5), 4vw, var(--sp-6));
+}
+.admin__h {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-h3);
+  letter-spacing: -0.02em;
+}
+.admin__sub {
+  margin-top: var(--sp-2);
+  color: var(--fg-2);
+  font-size: var(--fs-body);
+  line-height: 1.5;
+}
+.admin__create {
+  margin-top: var(--sp-5);
+  display: flex;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+  align-items: center;
+}
+.admin__select { max-width: 320px; }
+.admin__newlink {
+  margin-top: var(--sp-4);
+  display: flex;
+  gap: var(--sp-3);
+  align-items: center;
+  flex-wrap: wrap;
+  background: var(--surface);
+  border-radius: var(--r-input);
+  padding: var(--sp-3) var(--sp-4);
+}
+.admin__code {
+  font-family: "Hanken Grotesk", monospace;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  word-break: break-all;
+  flex: 1;
+  min-width: 200px;
+}
+.admin__list { list-style: none; margin: var(--sp-4) 0 0; padding: 0; }
+.admin__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding: var(--sp-3) 0;
+  border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+.admin__row.is-off { opacity: 0.6; }
+.admin__row-main { display: flex; align-items: center; gap: var(--sp-3); flex-wrap: wrap; }
+.admin__client { font-weight: 700; }
+.admin__token {
+  font-family: "Hanken Grotesk", monospace;
+  font-size: var(--fs-small);
+  color: var(--fg-2);
+}
+.admin__state { font-size: var(--fs-caption); font-weight: 700; padding: 2px 10px; border-radius: var(--r-pill); }
+.admin__state.on { background: var(--tint-sky); color: var(--fg-1); }
+.admin__state.off { background: color-mix(in srgb, var(--accent-amber) 22%, var(--white)); color: var(--fg-1); }
+.admin__row-actions { display: flex; gap: var(--sp-3); align-items: center; }
+.admin__linkbtn {
+  background: none;
+  border: none;
+  padding: 6px 4px;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: var(--fs-small);
+  letter-spacing: var(--tracking);
+  color: var(--fg-1);
+  text-decoration: underline;
+}
+.admin__linkbtn--danger { color: var(--accent-magenta); }
+@media (max-width: 520px) {
+  .admin__row { align-items: flex-start; flex-direction: column; }
+}
