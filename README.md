@@ -57,8 +57,16 @@ then log in and see only their client's data.
 - `api/session.js` — returns the signed-in client + Ad Grant (mock for now).
 - `api/projects.js` + `api/_transform.js` — fetch that client's ClickUp list(s)
   and translate them (status → plain state, `Category` field → section, due date
-  → timing). No ClickUp terminology reaches the client.
+  → timing, plus each item's Review Link and approval state). No ClickUp
+  terminology reaches the client.
+- `api/feedback.js` — client write-back: a note → the task's `Client Notes`
+  field, a decision → `Client Approval`, a file → the task's attachments. Every
+  write verifies the task is in the caller's client's list first.
 - `src/AuthGate.jsx` — sign-in / invite sign-up, then loads the portal.
+
+**Feedback:** each work item (and every "ready for your review" card) has a
+panel to open the Review link, leave a note, attach a file (≤4 MB), and Approve
+or Request changes. It all writes back onto the same ClickUp task.
 
 **One-time setup**
 

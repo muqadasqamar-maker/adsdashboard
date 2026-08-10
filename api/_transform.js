@@ -73,6 +73,18 @@ function reviewLinkFor(task) {
   return f && f.value ? String(f.value) : null;
 }
 
+// Client Approval -> "approved" | "changes" | "pending".
+function approvalFor(task) {
+  const f = field(task, FIELD.clientApproval);
+  if (!f || f.value === undefined || f.value === null || f.value === "") {
+    return "pending";
+  }
+  const name = (dropdownName(f) || "").toLowerCase();
+  if (name.includes("approved")) return "approved";
+  if (name.includes("modification")) return "changes";
+  return "pending";
+}
+
 function cleanTitle(name) {
   let t = (name || "").replace(/^B2S\s+/i, "");
   const m = t.match(/spotlight\s*\d\s*\/\s*\d\s*[—-]\s*(.+)$/i);
@@ -132,6 +144,7 @@ function mapTask(task, projectId, now) {
   };
   const link = reviewLinkFor(task);
   if (link) item.reviewLink = link;
+  item.approval = approvalFor(task);
   return item;
 }
 

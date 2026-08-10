@@ -1338,3 +1338,57 @@ strong { font-weight: 700; }
 @media (max-width: 520px) {
   .admin__row { align-items: flex-start; flex-direction: column; }
 }
+
+/* ============================================================
+   FeedbackPanel (leave a note / attach a file / approve)
+   ============================================================ */
+.fb {
+  margin-top: var(--sp-4);
+  display: grid;
+  gap: var(--sp-4);
+}
+.fb__approved {
+  justify-self: start;
+  font-weight: 700;
+  font-size: var(--fs-small);
+  color: var(--fg-1);
+  background: var(--tint-sky);
+  padding: 8px 14px;
+  border-radius: var(--r-pill);
+}
+.fb__actions { display: flex; gap: var(--sp-3); flex-wrap: wrap; }
+.fb__field { display: grid; gap: var(--sp-2); }
+.fb__label { font-size: var(--fs-small); font-weight: 600; color: var(--fg-2); }
+.fb__textarea {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  letter-spacing: var(--tracking);
+  color: var(--fg-1);
+  background: var(--white);
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-input);
+  padding: 12px 14px;
+  resize: vertical;
+  min-height: 72px;
+}
+.fb__textarea:focus-visible { outline: none; border-color: var(--black); }
+.fb__row { display: flex; gap: var(--sp-3); align-items: center; flex-wrap: wrap; }
+.fb__file { display: inline-flex; }
+.fb__file-btn {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: var(--fs-body);
+  letter-spacing: var(--tracking);
+  border-radius: var(--r-button);
+  padding: 12px 26px;
+  border: 1.7px solid var(--black);
+  color: var(--black);
+  cursor: pointer;
+  transition: background .16s var(--ease-hover), color .16s ease;
+}
+.fb__file:hover .fb__file-btn { background: var(--black); color: var(--white); }
+.fb__msg { font-size: var(--fs-small); padding: 8px 14px; border-radius: var(--r-input); line-height: 1.4; }
+.fb__msg--ok { background: var(--tint-sky); color: var(--fg-1); }
+.fb__msg--err { background: color-mix(in srgb, var(--accent-magenta) 12%, var(--white)); color: var(--fg-1); }

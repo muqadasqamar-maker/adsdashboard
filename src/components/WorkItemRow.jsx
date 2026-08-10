@@ -1,20 +1,20 @@
 import React, { useState } from "react";
 import ProjectStatusBadge from "./ProjectStatusBadge.jsx";
+import FeedbackPanel from "./FeedbackPanel.jsx";
 import { ChevronIcon } from "./Icons.jsx";
 import { workState, timingLabel } from "../lib/projectLang.js";
 
 /* ============================================================
-   WorkItemRow — one piece of work as a spacious editorial row
-   (not a task-table row). Shows only what the client needs:
-   what it is, a simple status, expected timing, and whether they
-   need to do anything. Optional plain-English detail on expand.
+   WorkItemRow — one piece of work as a spacious editorial row.
+   Shows what it is, a simple status, timing, and whether anything's
+   needed. Expands to a feedback panel (leave a note, attach a file,
+   approve) plus any plain-English detail.
    ============================================================ */
 
 export default function WorkItemRow({ item }) {
   const [open, setOpen] = useState(false);
   const s = workState(item.state);
   const d = item.detail || {};
-  const hasDetail = !!(d.doing || d.stands || d.next);
   const panelId = `witem-${item.id}`;
 
   return (
@@ -35,23 +35,21 @@ export default function WorkItemRow({ item }) {
 
         <div className="witem__side">
           <ProjectStatusBadge state={item.state} />
-          {hasDetail ? (
-            <button
-              type="button"
-              className="hcrow__toggle"
-              aria-expanded={open}
-              aria-controls={panelId}
-              onClick={() => setOpen((o) => !o)}
-            >
-              {open ? "Hide details" : "See details"}
-              <ChevronIcon open={open} size={18} />
-            </button>
-          ) : null}
+          <button
+            type="button"
+            className="hcrow__toggle"
+            aria-expanded={open}
+            aria-controls={panelId}
+            onClick={() => setOpen((o) => !o)}
+          >
+            {open ? "Hide" : "Give feedback"}
+            <ChevronIcon open={open} size={18} />
+          </button>
         </div>
       </div>
 
-      {hasDetail ? (
-        <div className="witem__detail" id={panelId} hidden={!open}>
+      {open ? (
+        <div className="witem__detail" id={panelId}>
           {d.doing ? (
             <div className="mini-block">
               <h4>What we're doing</h4>
@@ -70,6 +68,7 @@ export default function WorkItemRow({ item }) {
               <p>{d.next}</p>
             </div>
           ) : null}
+          <FeedbackPanel item={item} />
         </div>
       ) : null}
     </div>
