@@ -93,15 +93,7 @@ export default function FeedbackPanel({ item }) {
           disabled={busy || approval === "approved"}
           onClick={() => decide("approved")}
         >
-          Approve
-        </button>
-        <button
-          type="button"
-          className="as-btn as-btn-outline"
-          disabled={busy}
-          onClick={() => decide("changes")}
-        >
-          Request changes
+          {approval === "approved" ? "Approved" : "Approve"}
         </button>
       </div>
 
