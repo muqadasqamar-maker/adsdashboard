@@ -11,9 +11,9 @@ import ProjectsDashboard from "./components/ProjectsDashboard.jsx";
    "Ad Grant" (results) and "Projects" (work) feels like one product.
    ============================================================ */
 
-export default function App({ adGrant, projects }) {
+export default function App({ adGrant, projects, clientName, onSignOut }) {
   const [view, setView] = useState("adgrant");
-  const [account] = useState(adGrant.account.name);
+  const account = clientName || (adGrant && adGrant.account && adGrant.account.name) || "";
 
   const footerText =
     view === "adgrant"
@@ -23,7 +23,7 @@ export default function App({ adGrant, projects }) {
   return (
     <div className="app">
       <div className="topbar">
-        <DashboardHeader accounts={[account]} selected={account} />
+        <DashboardHeader selected={account} onSignOut={onSignOut} />
         <PrimaryNav view={view} onChange={setView} />
       </div>
 

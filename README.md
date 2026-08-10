@@ -5,10 +5,11 @@ ActivatUs manages. It is built for a non-technical reader (think a 50–70 year
 old executive director) who should understand, within about ten seconds,
 whether their grant is healthy and being looked after.
 
-Built with **React + Vite**. The Ad Grant view runs on mock data shaped like
-the real monitoring API. The Projects view reads **live from ClickUp** through
-a thin serverless proxy that keeps the API token server-side (see "Connect
-ClickUp" below). No database, no client-side secrets.
+Built with **React + Vite**, with **Supabase** auth and **Vercel** serverless
+functions. Each client signs in (via an invite), then sees only their own data:
+their Projects come **live from ClickUp**, and their Ad Grant is mock data for
+now (shaped like the real platform, swappable later). All secrets stay
+server-side; the browser only ever holds the Supabase anon key.
 
 ---
 
@@ -35,51 +36,64 @@ npm run preview  # serve the built dist/ locally to check it
 
 ## Deploy
 
-The repo is preconfigured for a zero-setup deploy on either host:
+**Deploy to Vercel.** It auto-detects Vite (build `vite build`, output `dist`)
+**and** runs the `/api` serverless functions this app now depends on for auth
+and data. Import the repo, add the environment variables (below), and deploy.
 
-- **Netlify** — `netlify.toml` sets build command `npm run build` and publish
-  dir `dist`. Import the repo and click Deploy.
-- **Vercel** — auto-detects Vite (build `vite build`, output `dist`). Import
-  the repo and click Deploy. No settings to change.
+> Note: a plain static host (e.g. the older Netlify deploy) serves the UI but
+> not the `/api` functions, so sign-in and data won't work there. Use Vercel.
 
 ---
 
-## Connect ClickUp (live Projects data)
+## Setup: Supabase auth + invites + ClickUp
 
-The Projects area reads **live** from ClickUp through a small serverless proxy
-so the API token stays on the server and never reaches the browser.
+The portal is gated: a client's people create accounts via an **invite link**,
+then log in and see only their client's data.
 
-- `api/projects.js` — Vercel serverless function. Reads the token from the
-  environment, fetches the campaign list, and returns the client view.
-- `api/_transform.js` — maps ClickUp tasks (statuses, tags/names, due dates)
-  onto the app's shape. No ClickUp terminology reaches the client.
-- `src/main.jsx` — renders instantly with the bundled fallback, then swaps in
-  the live data from `/api/projects` when it arrives.
+**How it fits together**
+- `supabase/schema.sql` — three tables: `clients` (registry), `invites`
+  (per-client sign-up tokens), `profiles` (account → client).
+- `api/signup.js` — invite-gated account creation (server-side, service role).
+- `api/session.js` — returns the signed-in client + Ad Grant (mock for now).
+- `api/projects.js` + `api/_transform.js` — fetch that client's ClickUp list(s)
+  and translate them (status → plain state, `Category` field → section, due date
+  → timing). No ClickUp terminology reaches the client.
+- `src/AuthGate.jsx` — sign-in / invite sign-up, then loads the portal.
 
-**Setup (one time):**
+**One-time setup**
 
-1. Create a ClickUp API token: ClickUp → your avatar → **Settings → Apps →
-   API Token** (a personal token, `pk_…`).
-2. In Vercel → your project → **Settings → Environment Variables**, add:
-   - `CLICKUP_TOKEN` = your token (required)
-   - `CLICKUP_LIST_ID` = a list id (optional; defaults to the Back-to-School
-     2026 list `901820231824`)
-3. Redeploy. The Projects page now shows live ClickUp data.
+1. **Supabase project** → run `supabase/schema.sql` in the SQL editor
+   (Dashboard → SQL → New query). Edit the seeded invite token to a long random
+   string, or add your own invites/clients.
+2. **Supabase → Authentication → Providers → Email:** enabled. **Turn OFF**
+   "Allow new users to sign up" — accounts are only created server-side through
+   an invite (admin API bypasses this toggle).
+3. **ClickUp API token:** ClickUp → avatar → Settings → Apps → API Token (`pk_…`).
+4. **Vercel → Settings → Environment Variables** (see `.env.example`):
+   - `VITE_SUPABASE_URL`, `VITE_SUPABASE_ANON_KEY` (browser-safe)
+   - `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY` (server only — secret)
+   - `CLICKUP_TOKEN` (server only — one ActivatUs workspace token reads all
+     client folders)
+5. Redeploy.
 
-The token lives only in Vercel's environment. It is never committed, never
-sent to the browser, and can be rotated in the dashboard at any time. If it
-isn't set (or you're running locally without `vercel dev`), the app quietly
-falls back to the bundled sample so nothing breaks.
+**Inviting a client:** add a row to `invites` (a long random `token`, the
+client's `id`) and send `https://<your-app>/?invite=<token>`. They sign up once
+(one account per email), then log in normally afterwards.
 
-**Run the function locally:** `vercel dev` (serves both the Vite app and the
-`/api` function). Plain `npm run dev` runs the UI only, on the fallback data.
+**Adding a client:** add a row to `clients` with their `clickup_list_ids` (the
+lists that feed their Projects view) and `clickup_customer` value.
 
-### Ad Grant data
+**Local dev:** `vercel dev` (runs the Vite app + `/api` functions with your
+`.env.local`). Plain `npm run dev` runs the UI only — the API calls fail and the
+sign-in screen shows, which is expected without the functions.
 
-The Ad Grant view still uses the mock in `src/data/mockData.js`. To wire its
-own API later, fetch it in `src/main.jsx` and pass it as `adGrant` to `<App>`;
-the shape is documented in that file. All human-facing wording is produced in
-`src/lib/translate.js`, so raw Google Ads terminology never leaks into the UI.
+### Ad Grant data (still mock)
+
+`api/_adgrant_mock.js` returns the Ad Grant sweep per client. When
+platform.activatus.com exposes its API, replace `buildAdGrant()` there with a
+fetch using the client's `ad_grant_account_id`, mapped onto the same shape. All
+Google Ads wording is produced in `src/lib/translate.js`, so terminology never
+leaks into the UI.
 
 ---
 
