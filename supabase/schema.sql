@@ -50,8 +50,14 @@ alter table public.profiles enable row level security;
 
 -- ---- seed: one client + one demo invite --------------------
 -- Benetech / Bookshare, wired to the real Back-to-School 2026 list.
+-- Each row wires an org to its ClickUp "Customer" value + the list(s)
+-- that feed its Projects view. Add more clients the same way.
 insert into public.clients (id, name, clickup_customer, clickup_list_ids, ad_grant_account_id)
-values ('benetech', 'Bookshare', 'Benetech', array['901820231824'], null)
+values
+  ('benetech',  'Bookshare', 'Benetech',  array['901820231824'], null),  -- Back-to-School 2026
+  ('pqmd',      'PQMD',      'PQMD',      array['901820233616'], null),  -- One Offs
+  ('nph-usa',   'NPH USA',   'NPH USA',   array['901820259861'], null),  -- Fall Family Days
+  ('tag-today', 'TAG Today', 'TAG Today', array['901820234992'], null)   -- Groundwork
 on conflict (id) do update
   set name = excluded.name,
       clickup_customer = excluded.clickup_customer,
