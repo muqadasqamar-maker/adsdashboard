@@ -43,7 +43,8 @@ export default async function handler(req, res) {
     );
 
     const payload = transform(lists, client);
-    res.setHeader("Cache-Control", "s-maxage=120, stale-while-revalidate=300");
+    // Per-client data — never shared-cache at the edge, and always fresh.
+    res.setHeader("Cache-Control", "private, no-store");
     res.status(200).json(payload);
   } catch (e) {
     res.status(500).json({ error: "Couldn't load your projects right now.", detail: String(e) });
