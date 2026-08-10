@@ -770,7 +770,12 @@ strong { font-weight: 700; }
 /* ============================================================
    Client attention (a quick thing we need from you)
    ============================================================ */
-.attn-list { display: grid; gap: var(--sp-4); }
+.attn-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(440px, 100%), 1fr));
+  gap: var(--sp-4);
+  align-items: start;
+}
 .attn-card {
   background: color-mix(in srgb, var(--accent-amber) 12%, var(--white));
   border-radius: var(--r-card);
