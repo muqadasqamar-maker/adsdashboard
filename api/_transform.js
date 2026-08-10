@@ -83,12 +83,12 @@ function cleanTitle(name) {
 
 function describe(task, category) {
   const sm = (task.name || "").match(/spotlight\s*(\d)\s*\/\s*\d/i);
-  if (sm) return `Part ${sm[1]} of the Back-to-School spotlight series.`;
+  if (sm) return `Part ${sm[1]} of the spotlight series.`;
   switch (category) {
-    case "email": return "A campaign email for your Back-to-School push.";
-    case "website": return "A web page for your Back-to-School campaign.";
-    case "blogs": return "A blog post supporting your Back-to-School campaign.";
-    default: return "A social asset for your Back-to-School campaign.";
+    case "email": return "An email we're preparing for you.";
+    case "website": return "A web page we're preparing for you.";
+    case "blogs": return "A blog post we're preparing for you.";
+    default: return "A piece of content we're preparing for you.";
   }
 }
 
