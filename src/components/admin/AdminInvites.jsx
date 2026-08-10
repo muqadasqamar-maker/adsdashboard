@@ -45,6 +45,15 @@ export default function AdminInvites() {
     setClients(d.clients);
     setInvites(d.invites);
     if (d.clients[0] && !sel) setSel(d.clients[0].id);
+    if (d.dbError) {
+      setErr("Database read failed: " + d.dbError);
+    } else if (!d.clients || d.clients.length === 0) {
+      setErr(
+        "Connected, but no clients found. Check that the app's SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY point to this same project (and that the service_role key isn't the anon key)."
+      );
+    } else {
+      setErr(null);
+    }
   }
 
   async function unlock(e) {

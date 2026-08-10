@@ -43,14 +43,20 @@ export default async function handler(req, res) {
 
   // ---- list ------------------------------------------------
   if (req.method === "GET") {
-    const [{ data: clients }, { data: invites }] = await Promise.all([
-      sb.from("clients").select("id, name").order("name"),
-      sb
-        .from("invites")
-        .select("token, client_id, active, created_at")
-        .order("created_at", { ascending: false }),
-    ]);
-    res.status(200).json({ clients: clients || [], invites: invites || [] });
+    const clientsRes = await sb.from("clients").select("id, name").order("name");
+    const invitesRes = await sb
+      .from("invites")
+      .select("token, client_id, active, created_at")
+      .order("created_at", { ascending: false });
+    const dbError =
+      (clientsRes.error && clientsRes.error.message) ||
+      (invitesRes.error && invitesRes.error.message) ||
+      null;
+    res.status(200).json({
+      clients: clientsRes.data || [],
+      invites: invitesRes.data || [],
+      dbError,
+    });
     return;
   }
 
