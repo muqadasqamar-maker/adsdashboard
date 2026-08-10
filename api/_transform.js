@@ -9,11 +9,8 @@
    falling back to name inference. Review Link is surfaced per item.
    ============================================================ */
 
-const FIELD = {
-  category: "a3539949-f5a6-4331-aab1-258979739267",
-  reviewLink: "74e61632-87b2-4036-b848-e1acbc0a43c7",
-  clientApproval: "3c5b6a6a-0c4c-428e-8220-74f558516258",
-};
+// Feedback custom fields are resolved BY NAME per task, because their
+// ids (and types) differ across client folders in ClickUp.
 
 const STATUS_TO_STATE = {
   "to do": "upcoming",
@@ -42,22 +39,33 @@ function stateFor(task) {
   return STATUS_TO_STATE[statusName(task).toLowerCase()] || "working";
 }
 
-function field(task, id) {
-  return (task.custom_fields || []).find((f) => f.id === id);
+function fieldByName(task, name) {
+  const n = name.trim().toLowerCase();
+  return (task.custom_fields || []).find(
+    (f) => (f.name || "").trim().toLowerCase() === n
+  );
 }
+function optName(o) {
+  return (o && (o.name || o.label)) || "";
+}
+// Resolve a dropdown/labels field's selected option name(s) to a string.
 function dropdownName(f) {
-  if (!f || f.value === undefined || f.value === null) return null;
+  if (!f || f.value === undefined || f.value === null || f.value === "") return null;
   const opts = (f.type_config && f.type_config.options) || [];
+  if (Array.isArray(f.value)) {
+    // labels: value is an array of option ids
+    return f.value.map((v) => optName(opts.find((o) => o.id === v))).join(" ");
+  }
   const v = f.value;
   const opt =
     opts.find((o) => o.orderindex === v) ||
     opts.find((o) => o.id === v) ||
     (typeof v === "number" ? opts[v] : null);
-  return opt ? opt.name : null;
+  return opt ? optName(opt) : null;
 }
 
 function categoryFor(task) {
-  const cat = dropdownName(field(task, FIELD.category));
+  const cat = dropdownName(fieldByName(task, "Category"));
   if (cat && CATEGORY_MAP[cat.toLowerCase()]) return CATEGORY_MAP[cat.toLowerCase()];
   // fallback: infer from name
   const n = (task.name || "").toLowerCase();
@@ -69,17 +77,13 @@ function categoryFor(task) {
 }
 
 function reviewLinkFor(task) {
-  const f = field(task, FIELD.reviewLink);
+  const f = fieldByName(task, "Review Link");
   return f && f.value ? String(f.value) : null;
 }
 
 // Client Approval -> "approved" | "changes" | "pending".
 function approvalFor(task) {
-  const f = field(task, FIELD.clientApproval);
-  if (!f || f.value === undefined || f.value === null || f.value === "") {
-    return "pending";
-  }
-  const name = (dropdownName(f) || "").toLowerCase();
+  const name = (dropdownName(fieldByName(task, "Client Approval")) || "").toLowerCase();
   if (name.includes("approved")) return "approved";
   if (name.includes("modification")) return "changes";
   return "pending";

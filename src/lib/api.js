@@ -16,7 +16,11 @@ export async function apiGet(path) {
   const headers = await authHeader();
   const res = await fetch(path, { headers });
   const body = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(body.error || `Request failed (${res.status})`);
+  if (!res.ok)
+    throw new Error(
+      (body.error || `Request failed (${res.status})`) +
+        (body.detail ? ` — ${body.detail}` : "")
+    );
   return body;
 }
 
@@ -28,6 +32,10 @@ export async function apiPost(path, payload) {
     body: JSON.stringify(payload || {}),
   });
   const body = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(body.error || `Request failed (${res.status})`);
+  if (!res.ok)
+    throw new Error(
+      (body.error || `Request failed (${res.status})`) +
+        (body.detail ? ` — ${body.detail}` : "")
+    );
   return body;
 }

@@ -3,24 +3,15 @@ import { requireClient } from "./_supabase.js";
 /* ============================================================
    POST /api/feedback  (authenticated)
 
-   Client feedback that writes back onto the SAME ClickUp task:
+   Client feedback written back onto the SAME ClickUp task:
      { taskId, action: "note", text }
      { taskId, action: "approval", decision: "approved" | "changes" }
      { taskId, action: "file", filename, contentType, dataBase64 }
 
-   Every write first verifies the task belongs to the caller's client
-   (its list is one of the client's configured lists), so no one can
-   write to another org's task.
+   Custom fields are resolved BY NAME on the task (their ids and types
+   differ per client folder). Every write first verifies the task is
+   in one of the caller client's lists.
    ============================================================ */
-
-const FIELD = {
-  clientNotes: "b87317bf-4256-4dc8-858f-f549df38cf35",
-  clientApproval: "3c5b6a6a-0c4c-428e-8220-74f558516258",
-};
-const APPROVAL_OPTION = {
-  approved: "8846cf7e-ee5e-49b4-8447-dd31570dcb6a",
-  changes: "96a1bb1c-f8fd-4d40-85cf-6393dad6346e",
-};
 
 const CU = "https://api.clickup.com/api/v2";
 
@@ -50,12 +41,10 @@ export default async function handler(req, res) {
     return;
   }
 
-  // ---- authorize: the task must live in one of the client's lists ----
+  // ---- fetch the task + authorize (must be in the client's lists) ----
   let task;
   try {
-    const r = await fetch(`${CU}/task/${taskId}?include_subtasks=false`, {
-      headers: auth,
-    });
+    const r = await fetch(`${CU}/task/${taskId}`, { headers: auth });
     if (!r.ok) {
       res.status(404).json({ error: "We couldn't find that item." });
       return;
@@ -78,21 +67,34 @@ export default async function handler(req, res) {
         res.status(400).json({ error: "Please write a note first." });
         return;
       }
-      // Append to any existing notes so history is preserved.
-      const existing = readTextField(task, FIELD.clientNotes);
+      const f = fieldByName(task, "Client Notes");
+      if (!f) {
+        res.status(400).json({ error: "This item can't take notes yet." });
+        return;
+      }
+      const existing = typeof f.value === "string" ? f.value : "";
       const value = existing ? `${existing}\n\n${text}` : text;
-      await setField(taskId, FIELD.clientNotes, value, auth);
+      await setField(taskId, f.id, value, auth);
       res.status(200).json({ ok: true });
       return;
     }
 
     if (action === "approval") {
-      const opt = APPROVAL_OPTION[body.decision];
-      if (!opt) {
-        res.status(400).json({ error: "Unknown approval decision." });
+      const f = fieldByName(task, "Client Approval");
+      if (!f) {
+        res.status(400).json({ error: "This item can't be approved here yet." });
         return;
       }
-      await setField(taskId, FIELD.clientApproval, opt, auth);
+      const opts = (f.type_config && f.type_config.options) || [];
+      const want = body.decision === "changes" ? "modif" : "approved";
+      const opt = opts.find((o) => optName(o).trim().toLowerCase().includes(want));
+      if (!opt) {
+        res.status(400).json({ error: "Couldn't find that approval option in ClickUp." });
+        return;
+      }
+      // Labels fields take an array of option ids; dropdowns take one id.
+      const value = f.type === "labels" ? [opt.id] : opt.id;
+      await setField(taskId, f.id, value, auth);
       res.status(200).json({ ok: true });
       return;
     }
@@ -112,7 +114,7 @@ export default async function handler(req, res) {
       );
       const r = await fetch(`${CU}/task/${taskId}/attachment`, {
         method: "POST",
-        headers: auth, // don't set Content-Type; FormData sets the boundary
+        headers: auth,
         body: form,
       });
       if (!r.ok) {
@@ -130,9 +132,14 @@ export default async function handler(req, res) {
   }
 }
 
-function readTextField(task, fieldId) {
-  const f = (task.custom_fields || []).find((x) => x.id === fieldId);
-  return f && typeof f.value === "string" ? f.value : "";
+function fieldByName(task, name) {
+  const n = name.trim().toLowerCase();
+  return (task.custom_fields || []).find(
+    (f) => (f.name || "").trim().toLowerCase() === n
+  );
+}
+function optName(o) {
+  return (o && (o.name || o.label)) || "";
 }
 
 async function setField(taskId, fieldId, value, auth) {
@@ -143,7 +150,7 @@ async function setField(taskId, fieldId, value, auth) {
   });
   if (!r.ok) {
     const t = await r.text();
-    throw new Error(`field ${fieldId} update failed: ${t.slice(0, 200)}`);
+    throw new Error(`ClickUp field update failed: ${t.slice(0, 200)}`);
   }
 }
 
